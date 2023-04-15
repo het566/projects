@@ -1,0 +1,120 @@
+import pandas as pd
+import random
+
+from data import bankdata
+
+bank= '''
+
+**********************
+BANK MANAGEMENT SYSTEM
+**********************
+'''
+print(bank)
+
+# function to create new account
+
+def new_account():
+    name=input("enter your name")
+    mobile_no=int(input("enter your mobile number"))
+    state=input("enter your state")
+    city=input("enter your city")
+    address=input("enter your address")
+    addhar_no=int(input("enter your addhar no"))
+    pan_no=int(input("enter your pan card no"))
+    account_type=input("enter what type of of account do you want to open \"CURRENT\" OR \"SAVING\"")
+    money=int(input(" 1000rs to open a account "))
+    if(money<1000):
+        print("there is not enoungh money")
+        return
+    else:
+        print("transaction is succesfull")
+    accont_no=random.randint(1000000,6000000)
+    print(f"{name} have succesfully open your account and your accountno is{accont_no}")
+
+#function to deposit amount
+
+def deposit_amount():
+    name = input("Enter your name: ")
+    account_no = input("Enter your pin no: ")
+    account_type = input("Enter your account type: ")
+
+    if name in bankdata and account_no == bankdata[name]["pin"] and account_type == bankdata[name]["account_type"]:
+        print("Account found in bankdata")
+    else:
+        print("Account not found in bankdata")
+        return
+    money=int(input("enter hoe much money do you want deposit  minimum amount is 1000 and maximum amount is 10000\n"))
+    if(money<1000):
+        print("you can deposit money above than 1000rs")
+    elif(money>1000):
+        print("you cannot deposit more ten thousand")
+    else:
+        print(f"your {money} has been deposit succesfully")
+
+#function to withdraw amount
+
+def withdraw_amount():
+    name = input("Enter your name: ")
+    account_no = input("Enter your account number: ")
+    account_type = input("Enter your account type (CURRENT or SAVING): ")
+
+    if name in bankdata and account_no == bankdata[name]["account_no"] and account_type == bankdata[name]["account_type"]:
+        print("Account found in bank data.")
+    else:
+        print("Account not found in bank data.")
+        return
+    money = int(input("Enter how much money you want to withdraw: "))
+    balance = int(bankdata[name]["balance"]) # convert balance value to an integer
+    if money > balance:
+        print("Insufficient funds.")
+        return
+    else:
+        bankdata[name]["balance"] = str(balance - money) # convert balance back to a string after subtraction
+        remaining_balance = bankdata[name]["balance"]
+        print(f"Your {money} has been withdrawn successfully.")
+        print(f"Now you have {remaining_balance} in your account.")
+
+#to check balance enquiry
+
+def BALANCE_ENQIRY():
+    name = input("Enter your name: ")
+    account_no = input("Enter your account number: ")
+    account_type = input("Enter your account type (CURRENT or SAVING): ")
+
+    if name in bankdata and account_no == bankdata[name]["account_no"] and account_type == bankdata[name]["account_type"]:
+        print("Account found in bank data.")
+    else:
+        print("Account not found in bank data.")
+        return
+    remaining_balance = bankdata[name]["balance"]
+    print(f"NOW YOU {remaining_balance} IN YOUR ACCOUNT")
+
+#to print all data using panda
+
+def all_list():
+    myvar = pd.DataFrame(bankdata)
+    print(myvar)
+
+
+#main menu to select
+
+print("MAIN MENU")
+print("1.NEW ACCOUNT")
+print("2.DEPOSIT AMOUNT")
+print("3.WITHDRAW AMOUNT")
+print("4.BALANCE ENQIRY")
+print("5.ALL ACCOUNT HOLDER LIST")
+print("6.EXIT")
+choice=int(input("enter your choice"))
+if(choice==1):
+    new_account()
+elif(choice==2):
+    deposit_amount()
+elif(choice==3):
+    withdraw_amount()
+elif(choice==4):
+    BALANCE_ENQIRY()
+elif(choice==5):
+    all_list()
+elif(choice==6):
+    print("thank you for visiting our bank mangement system")
